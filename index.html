@@ -3,235 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3D Snake Game</title>
+    <title>3D Snake Game | Premium Edition</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Poppins:wght@300;400;500;600&display=swap">
     <style>
+        :root {
+            --primary: #00d9ff;
+            --primary-dark: #0099cc;
+            --secondary: #ff2a6d;
+            --dark: #0a192f;
+            --darker: #071020;
+            --light: #e0f7ff;
+            --success: #00ff88;
+            --warning: #ffcc00;
+            --card-bg: rgba(15, 30, 60, 0.9);
+            --card-border: rgba(0, 217, 255, 0.3);
+            --glow: 0 0 20px rgba(0, 217, 255, 0.5);
+            --menu-width: 280px;
+        }
+        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Poppins', sans-serif;
         }
         
         body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 100%);
+            color: var(--light);
             min-height: 100vh;
-            background: linear-gradient(135deg, #0c1a2d 0%, #1a3a5f 100%);
-            color: #e0f0ff;
-            overflow: hidden;
-            padding: 20px;
-        }
-        
-        .game-container {
+            overflow-x: hidden;
             position: relative;
-            width: 100%;
-            max-width: 800px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 20px;
-            z-index: 2;
-        }
-        
-        .header {
-            text-align: center;
-            width: 100%;
-            padding: 15px;
-            background: rgba(10, 25, 47, 0.8);
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            border: 2px solid #2a5c9a;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .header h1 {
-            font-size: 2.8rem;
-            background: linear-gradient(90deg, #4cc9f0, #4361ee);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            text-shadow: 0 0 15px rgba(76, 201, 240, 0.5);
-            margin-bottom: 8px;
-            letter-spacing: 1.5px;
-        }
-        
-        .header p {
-            font-size: 1.1rem;
-            color: #a0c8ff;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-        
-        .stats-container {
-            display: flex;
-            justify-content: space-between;
-            width: 100%;
-            gap: 15px;
-        }
-        
-        .stat-box {
-            flex: 1;
-            background: rgba(15, 30, 60, 0.85);
-            border-radius: 12px;
-            padding: 18px 15px;
-            text-align: center;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-            border: 1px solid #2a5c9a;
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-        
-        .stat-box:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.6);
-        }
-        
-        .stat-box h3 {
-            font-size: 1rem;
-            color: #6bb5ff;
-            margin-bottom: 8px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        
-        .stat-value {
-            font-size: 2.2rem;
-            font-weight: 700;
-            color: #4cc9f0;
-            text-shadow: 0 0 10px rgba(76, 201, 240, 0.7);
-        }
-        
-        .game-wrapper {
-            position: relative;
-            width: 100%;
-            height: 500px;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7);
-            border: 3px solid #2a5c9a;
-        }
-        
-        canvas {
-            display: block;
-            background: #0a192f;
-        }
-        
-        .controls {
-            display: flex;
-            justify-content: space-between;
-            width: 100%;
-            gap: 15px;
-        }
-        
-        .controls-left, .controls-right {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            width: 48%;
-        }
-        
-        button {
-            background: linear-gradient(to right, #1e3c72, #2a5298);
-            color: white;
-            border: none;
-            padding: 16px 20px;
-            border-radius: 10px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-        
-        button:hover {
-            background: linear-gradient(to right, #2a5298, #3a6bd1);
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
-        }
-        
-        button:active {
-            transform: translateY(0);
-        }
-        
-        .instructions {
-            background: rgba(15, 30, 60, 0.85);
-            border-radius: 12px;
-            padding: 20px;
-            width: 100%;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-            border: 1px solid #2a5c9a;
-        }
-        
-        .instructions h3 {
-            color: #6bb5ff;
-            margin-bottom: 15px;
-            font-size: 1.3rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .instructions p {
-            margin-bottom: 10px;
-            color: #c0d8ff;
-            line-height: 1.5;
-        }
-        
-        .key {
-            display: inline-block;
-            background: rgba(30, 60, 114, 0.8);
-            color: #4cc9f0;
-            padding: 4px 10px;
-            border-radius: 6px;
-            font-weight: bold;
-            margin: 0 5px;
-            border: 1px solid #3a6bd1;
-        }
-        
-        .game-over, .game-start {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(5, 15, 35, 0.95);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 10;
-            border-radius: 15px;
-            padding: 30px;
-            text-align: center;
-        }
-        
-        .game-over h2, .game-start h2 {
-            font-size: 3rem;
-            color: #ff4c6a;
-            margin-bottom: 20px;
-            text-shadow: 0 0 20px rgba(255, 76, 106, 0.7);
-        }
-        
-        .game-start h2 {
-            color: #4cc9f0;
-            text-shadow: 0 0 20px rgba(76, 201, 240, 0.7);
-        }
-        
-        .final-score {
-            font-size: 2.5rem;
-            color: #f0ff00;
-            margin: 20px 0;
-            text-shadow: 0 0 15px rgba(240, 255, 0, 0.7);
         }
         
         .particles {
-            position: absolute;
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
@@ -244,62 +51,710 @@
             position: absolute;
             width: 4px;
             height: 4px;
-            background: rgba(76, 201, 240, 0.7);
+            background: var(--primary);
             border-radius: 50%;
-            box-shadow: 0 0 10px 2px rgba(76, 201, 240, 0.5);
+            box-shadow: var(--glow);
+        }
+        
+        .game-container {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Header Styles */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background: rgba(10, 25, 47, 0.85);
+            border-radius: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            border: 2px solid var(--card-border);
+            backdrop-filter: blur(10px);
+            position: relative;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo-icon {
+            font-size: 2.5rem;
+            color: var(--primary);
+            filter: drop-shadow(var(--glow));
+        }
+        
+        .logo-text {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.2rem;
+            background: linear-gradient(90deg, var(--primary), var(--success));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 15px rgba(0, 217, 255, 0.3);
+            font-weight: 900;
+            letter-spacing: 2px;
+        }
+        
+        .menu-btn {
+            background: rgba(0, 217, 255, 0.1);
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 100;
+        }
+        
+        .menu-btn:hover {
+            background: rgba(0, 217, 255, 0.2);
+            transform: rotate(90deg);
+            box-shadow: var(--glow);
+        }
+        
+        /* Menu Styles */
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 99;
+            display: none;
+            backdrop-filter: blur(5px);
+        }
+        
+        .menu-panel {
+            position: fixed;
+            top: 0;
+            right: -var(--menu-width);
+            width: var(--menu-width);
+            height: 100%;
+            background: linear-gradient(180deg, var(--darker) 0%, var(--dark) 100%);
+            z-index: 100;
+            padding: 30px 20px;
+            transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border-left: 2px solid var(--card-border);
+            box-shadow: -10px 0 30px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            overflow-y: auto;
+        }
+        
+        .menu-panel.active {
+            right: 0;
+        }
+        
+        .menu-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .menu-header h3 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--primary);
+            font-size: 1.5rem;
+        }
+        
+        .close-menu {
+            background: none;
+            border: none;
+            color: var(--light);
+            font-size: 1.2rem;
+            cursor: pointer;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        
+        .close-menu:hover {
+            background: rgba(255, 42, 109, 0.2);
+            color: var(--secondary);
+        }
+        
+        .menu-section {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 20px;
+            border: 1px solid var(--card-border);
+        }
+        
+        .menu-section h4 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .menu-section h4 i {
+            font-size: 1.1rem;
+        }
+        
+        .menu-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(0, 217, 255, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .menu-item:last-child {
+            border-bottom: none;
+        }
+        
+        .menu-item:hover {
+            color: var(--primary);
+            padding-left: 5px;
+        }
+        
+        .menu-item i {
+            width: 20px;
+            text-align: center;
+        }
+        
+        /* Game Stats */
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, rgba(0, 217, 255, 0.1), rgba(0, 255, 136, 0.05));
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            border: 1px solid var(--card-border);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--glow);
+        }
+        
+        .stat-card h3 {
+            color: #a0c8ff;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+        
+        .stat-value {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            color: var(--primary);
+            text-shadow: 0 0 10px rgba(0, 217, 255, 0.5);
+            font-weight: 700;
+        }
+        
+        /* Game Canvas */
+        .game-wrapper {
+            flex: 1;
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+            border: 3px solid var(--primary);
+            margin-bottom: 25px;
+            min-height: 500px;
+        }
+        
+        canvas {
+            display: block;
+            background: var(--dark);
+            width: 100%;
+            height: 100%;
+        }
+        
+        /* Game Screens */
+        .game-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(7, 16, 32, 0.95);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+            padding: 30px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+        
+        .game-screen h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 30px rgba(0, 217, 255, 0.5);
+        }
+        
+        .game-start h2 {
+            animation: pulse 2s infinite;
+        }
+        
+        .final-score {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3rem;
+            color: var(--warning);
+            margin: 20px 0;
+            text-shadow: 0 0 20px rgba(255, 204, 0, 0.7);
         }
         
         .difficulty-selector {
             display: flex;
-            gap: 10px;
-            margin: 15px 0;
+            gap: 15px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+            justify-content: center;
         }
         
         .difficulty-btn {
-            padding: 10px 15px;
-            font-size: 0.9rem;
+            background: rgba(0, 217, 255, 0.1);
+            border: 2px solid var(--primary);
+            color: var(--light);
+            padding: 12px 25px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
         }
         
         .difficulty-btn.active {
-            background: linear-gradient(to right, #4cc9f0, #4361ee);
-            box-shadow: 0 0 15px rgba(76, 201, 240, 0.7);
+            background: var(--primary);
+            color: var(--dark);
+            box-shadow: var(--glow);
+        }
+        
+        .difficulty-btn:hover:not(.active) {
+            background: rgba(0, 217, 255, 0.2);
+            transform: translateY(-3px);
+        }
+        
+        /* Buttons */
+        .btn {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border: none;
+            padding: 18px 35px;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            box-shadow: 0 10px 20px rgba(0, 217, 255, 0.3);
+        }
+        
+        .btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 217, 255, 0.4);
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(135deg, var(--secondary), #cc0052);
+        }
+        
+        .btn-secondary:hover {
+            background: linear-gradient(135deg, #cc0052, var(--secondary));
+            box-shadow: 0 15px 30px rgba(255, 42, 109, 0.4);
+        }
+        
+        /* Game Controls */
+        .game-controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .control-btn {
+            background: var(--card-bg);
+            border: 2px solid var(--card-border);
+            color: var(--light);
+            padding: 18px;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+        
+        .control-btn:hover {
+            background: rgba(0, 217, 255, 0.1);
+            border-color: var(--primary);
+            transform: translateY(-3px);
+        }
+        
+        /* Instructions */
+        .instructions {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 25px;
+            border: 2px solid var(--card-border);
+            margin-bottom: 20px;
+        }
+        
+        .instructions h3 {
+            color: var(--primary);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .instruction-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+        
+        .instruction-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 12px;
+            background: rgba(0, 217, 255, 0.05);
+            border-radius: 10px;
+        }
+        
+        .key {
+            background: rgba(0, 217, 255, 0.2);
+            color: var(--primary);
+            padding: 8px 15px;
+            border-radius: 8px;
+            font-weight: bold;
+            border: 1px solid var(--primary);
+            min-width: 50px;
+            text-align: center;
+        }
+        
+        /* Settings Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 200;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(10px);
+        }
+        
+        .modal {
+            background: linear-gradient(180deg, var(--darker) 0%, var(--dark) 100%);
+            border-radius: 25px;
+            padding: 30px;
+            width: 90%;
+            max-width: 500px;
+            border: 2px solid var(--card-border);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
+            position: relative;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+        
+        .modal-header h3 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--primary);
+            font-size: 1.8rem;
+        }
+        
+        .close-modal {
+            background: none;
+            border: none;
+            color: var(--light);
+            font-size: 1.5rem;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        
+        .close-modal:hover {
+            background: rgba(255, 42, 109, 0.2);
+            color: var(--secondary);
+        }
+        
+        .setting-item {
+            margin-bottom: 20px;
+        }
+        
+        .setting-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .setting-label span {
+            color: var(--light);
+            font-size: 1.1rem;
+        }
+        
+        .setting-label .value {
+            color: var(--primary);
+            font-family: 'Orbitron', sans-serif;
+        }
+        
+        .slider {
+            width: 100%;
+            height: 10px;
+            -webkit-appearance: none;
+            appearance: none;
+            background: rgba(0, 217, 255, 0.1);
+            border-radius: 5px;
+            outline: none;
+        }
+        
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: var(--primary);
+            cursor: pointer;
+            box-shadow: var(--glow);
+        }
+        
+        .score-history {
+            max-height: 300px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+        
+        .score-entry {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 15px;
+            background: rgba(0, 217, 255, 0.05);
+            border-radius: 10px;
+            margin-bottom: 10px;
+            border: 1px solid var(--card-border);
+        }
+        
+        .score-entry:last-child {
+            margin-bottom: 0;
+        }
+        
+        .score-rank {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--primary);
+            font-weight: bold;
+            width: 30px;
+        }
+        
+        .score-value {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            color: var(--warning);
+        }
+        
+        .score-date {
+            color: #a0c8ff;
+            font-size: 0.9rem;
+        }
+        
+        /* Fullscreen Styles */
+        body.fullscreen {
+            padding: 0;
+        }
+        
+        body.fullscreen .game-container {
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        body.fullscreen .header,
+        body.fullscreen .stats-container,
+        body.fullscreen .game-controls,
+        body.fullscreen .instructions {
+            opacity: 0.9;
+            transition: opacity 0.3s ease;
+        }
+        
+        body.fullscreen .header:hover,
+        body.fullscreen .stats-container:hover,
+        body.fullscreen .game-controls:hover,
+        body.fullscreen .instructions:hover {
+            opacity: 1;
+        }
+        
+        /* Animations */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .stats-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .game-controls {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .logo-text {
+                font-size: 1.8rem;
+            }
+            
+            .game-screen h2 {
+                font-size: 2.8rem;
+            }
         }
         
         @media (max-width: 768px) {
-            .stats-container, .controls {
+            .header {
                 flex-direction: column;
+                gap: 20px;
+                text-align: center;
             }
             
-            .controls-left, .controls-right {
-                width: 100%;
+            .stats-container {
+                grid-template-columns: 1fr;
             }
             
-            .game-wrapper {
-                height: 400px;
+            .game-controls {
+                grid-template-columns: 1fr;
             }
             
-            .header h1 {
+            .instruction-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .game-screen h2 {
                 font-size: 2.2rem;
             }
             
+            .final-score {
+                font-size: 2.5rem;
+            }
+            
             .stat-value {
-                font-size: 1.8rem;
+                font-size: 2rem;
+            }
+            
+            .btn {
+                padding: 15px 25px;
+                font-size: 1rem;
             }
         }
         
         @media (max-width: 480px) {
-            .game-wrapper {
-                height: 350px;
+            .menu-panel {
+                width: 100%;
+                right: -100%;
             }
             
-            .header h1 {
+            .difficulty-selector {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .difficulty-btn {
+                width: 200px;
+            }
+            
+            .game-screen h2 {
                 font-size: 1.8rem;
             }
             
-            button {
-                padding: 14px 16px;
-                font-size: 1rem;
+            .final-score {
+                font-size: 2rem;
             }
+        }
+        
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 217, 255, 0.1);
+            border-radius: 10px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 10px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-dark);
         }
     </style>
 </head>
@@ -307,76 +762,246 @@
     <!-- Background particles -->
     <div class="particles" id="particles"></div>
     
-    <div class="game-container">
-        <div class="header">
-            <h1><i class="fas fa-gamepad"></i> 3D SNAKE GAME</h1>
-            <p>Navigate the snake to eat food and grow longer. Avoid walls and yourself!</p>
+    <!-- Menu Overlay -->
+    <div class="menu-overlay" id="menuOverlay"></div>
+    
+    <!-- Menu Panel -->
+    <div class="menu-panel" id="menuPanel">
+        <div class="menu-header">
+            <h3><i class="fas fa-gamepad"></i> GAME MENU</h3>
+            <button class="close-menu" id="closeMenu">
+                <i class="fas fa-times"></i>
+            </button>
         </div>
         
+        <div class="menu-section">
+            <h4><i class="fas fa-play-circle"></i> Game Controls</h4>
+            <div class="menu-item" id="pauseResumeBtn">
+                <span><i class="fas fa-pause"></i> Pause/Resume</span>
+                <span class="key">P</span>
+            </div>
+            <div class="menu-item" id="restartGameBtn">
+                <span><i class="fas fa-redo"></i> Restart Game</span>
+            </div>
+            <div class="menu-item" id="fullscreenBtn">
+                <span><i class="fas fa-expand"></i> Fullscreen</span>
+                <span class="key">F</span>
+            </div>
+        </div>
+        
+        <div class="menu-section">
+            <h4><i class="fas fa-cog"></i> Settings</h4>
+            <div class="menu-item" id="soundSettingsBtn">
+                <span><i class="fas fa-volume-up"></i> Sound Settings</span>
+            </div>
+            <div class="menu-item" id="musicSettingsBtn">
+                <span><i class="fas fa-music"></i> Music Settings</span>
+            </div>
+            <div class="menu-item" id="scoreHistoryBtn">
+                <span><i class="fas fa-trophy"></i> Score History</span>
+            </div>
+        </div>
+        
+        <div class="menu-section">
+            <h4><i class="fas fa-info-circle"></i> Info</h4>
+            <div class="menu-item" id="howToPlayBtn">
+                <span><i class="fas fa-question-circle"></i> How to Play</span>
+            </div>
+            <div class="menu-item" id="aboutGameBtn">
+                <span><i class="fas fa-code"></i> About Game</span>
+            </div>
+        </div>
+        
+        <div class="menu-section">
+            <h4><i class="fas fa-door-open"></i> Exit</h4>
+            <div class="menu-item" id="exitToMenuBtn">
+                <span><i class="fas fa-home"></i> Exit to Main Menu</span>
+            </div>
+            <div class="menu-item" id="quitGameBtn">
+                <span><i class="fas fa-power-off"></i> Quit Game</span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Game Container -->
+    <div class="game-container">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-gamepad"></i>
+                </div>
+                <div class="logo-text">3D SNAKE GAME</div>
+            </div>
+            <div class="menu-btn" id="menuBtn">
+                <i class="fas fa-ellipsis-v"></i>
+            </div>
+        </div>
+        
+        <!-- Game Stats -->
         <div class="stats-container">
-            <div class="stat-box">
+            <div class="stat-card">
                 <h3>Score</h3>
                 <div class="stat-value" id="score">0</div>
             </div>
-            <div class="stat-box">
+            <div class="stat-card">
                 <h3>High Score</h3>
                 <div class="stat-value" id="high-score">0</div>
             </div>
-            <div class="stat-box">
+            <div class="stat-card">
                 <h3>Length</h3>
                 <div class="stat-value" id="length">3</div>
             </div>
-            <div class="stat-box">
+            <div class="stat-card">
                 <h3>Speed</h3>
                 <div class="stat-value" id="speed">1</div>
             </div>
         </div>
         
+        <!-- Game Canvas -->
         <div class="game-wrapper">
             <canvas id="gameCanvas"></canvas>
             
             <!-- Game Start Screen -->
-            <div class="game-start" id="startScreen">
+            <div class="game-screen game-start" id="startScreen">
                 <h2>3D SNAKE GAME</h2>
-                <p class="final-score">Ready to Play?</p>
+                <div class="final-score">Ready to Play?</div>
                 <p>Select Difficulty:</p>
                 <div class="difficulty-selector">
                     <button class="difficulty-btn active" data-speed="120">Easy</button>
                     <button class="difficulty-btn" data-speed="90">Normal</button>
                     <button class="difficulty-btn" data-speed="60">Hard</button>
+                    <button class="difficulty-btn" data-speed="40">Expert</button>
                 </div>
-                <p>Use <span class="key">Arrow Keys</span> to control the snake</p>
-                <p>Eat <span style="color:#4cc9f0">●</span> to grow and score points</p>
-                <button id="startBtn"><i class="fas fa-play"></i> START GAME</button>
+                <p>Use <span class="key">Arrow Keys</span> or <span class="key">WASD</span> to control</p>
+                <p>Eat <span style="color:var(--primary)">●</span> to grow and score points</p>
+                <button class="btn" id="startBtn">
+                    <i class="fas fa-play"></i> START GAME
+                </button>
             </div>
             
-            <!-- Game Over Screen (initially hidden) -->
-            <div class="game-over" id="gameOverScreen" style="display: none;">
+            <!-- Game Over Screen -->
+            <div class="game-screen game-over" id="gameOverScreen" style="display: none;">
                 <h2>GAME OVER</h2>
-                <p class="final-score">Score: <span id="finalScore">0</span></p>
+                <div class="final-score">Score: <span id="finalScore">0</span></div>
                 <p>High Score: <span id="finalHighScore">0</span></p>
-                <button id="restartBtn"><i class="fas fa-redo"></i> PLAY AGAIN</button>
+                <button class="btn" id="restartBtn">
+                    <i class="fas fa-redo"></i> PLAY AGAIN
+                </button>
             </div>
         </div>
         
-        <div class="controls">
-            <div class="controls-left">
-                <button id="pauseBtn"><i class="fas fa-pause"></i> PAUSE GAME</button>
-                <button id="resetBtn"><i class="fas fa-undo"></i> RESET GAME</button>
-            </div>
-            <div class="controls-right">
-                <button id="soundToggle"><i class="fas fa-volume-up"></i> TOGGLE SOUND</button>
-                <button id="helpBtn"><i class="fas fa-question-circle"></i> HOW TO PLAY</button>
-            </div>
+        <!-- Game Controls -->
+        <div class="game-controls">
+            <button class="control-btn" id="pauseBtn">
+                <i class="fas fa-pause"></i> PAUSE GAME
+            </button>
+            <button class="control-btn" id="resetBtn">
+                <i class="fas fa-undo"></i> RESET GAME
+            </button>
+            <button class="control-btn" id="soundToggle">
+                <i class="fas fa-volume-up"></i> SOUND: ON
+            </button>
+            <button class="control-btn" id="musicToggle">
+                <i class="fas fa-music"></i> MUSIC: ON
+            </button>
         </div>
         
+        <!-- Instructions -->
         <div class="instructions">
             <h3><i class="fas fa-info-circle"></i> HOW TO PLAY</h3>
-            <p>• Use <span class="key">Arrow Keys</span> or <span class="key">WASD</span> to control the snake's direction</p>
-            <p>• Eat the <span style="color:#4cc9f0">blue food</span> to grow longer and increase your score</p>
-            <p>• Avoid hitting the walls or the snake's own body</p>
-            <p>• The game speeds up as your score increases</p>
-            <p>• Press <span class="key">P</span> to pause/resume the game</p>
+            <div class="instruction-grid">
+                <div class="instruction-item">
+                    <div class="key">↑ ↓ ← →</div>
+                    <span>Control snake direction</span>
+                </div>
+                <div class="instruction-item">
+                    <div class="key">WASD</div>
+                    <span>Alternative controls</span>
+                </div>
+                <div class="instruction-item">
+                    <div class="key">P</div>
+                    <span>Pause/Resume game</span>
+                </div>
+                <div class="instruction-item">
+                    <div class="key">F</div>
+                    <span>Toggle fullscreen</span>
+                </div>
+                <div class="instruction-item">
+                    <div class="key">ESC</div>
+                    <span>Close menu/modal</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Settings Modal -->
+    <div class="modal-overlay" id="settingsModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3><i class="fas fa-cog"></i> Game Settings</h3>
+                <button class="close-modal" id="closeSettings">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="setting-item">
+                <div class="setting-label">
+                    <span><i class="fas fa-volume-up"></i> Sound Volume</span>
+                    <span class="value" id="soundValue">70%</span>
+                </div>
+                <input type="range" class="slider" id="soundSlider" min="0" max="100" value="70">
+            </div>
+            
+            <div class="setting-item">
+                <div class="setting-label">
+                    <span><i class="fas fa-music"></i> Music Volume</span>
+                    <span class="value" id="musicValue">50%</span>
+                </div>
+                <input type="range" class="slider" id="musicSlider" min="0" max="100" value="50">
+            </div>
+            
+            <div class="setting-item">
+                <div class="setting-label">
+                    <span><i class="fas fa-gamepad"></i> Game Speed</span>
+                    <span class="value" id="speedValue">Normal</span>
+                </div>
+                <input type="range" class="slider" id="speedSlider" min="40" max="150" value="90">
+            </div>
+            
+            <button class="btn" id="saveSettings" style="width: 100%; margin-top: 20px;">
+                <i class="fas fa-save"></i> SAVE SETTINGS
+            </button>
+        </div>
+    </div>
+    
+    <!-- Score History Modal -->
+    <div class="modal-overlay" id="scoreModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3><i class="fas fa-trophy"></i> Score History</h3>
+                <button class="close-modal" id="closeScoreModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="score-history" id="scoreHistory">
+                <!-- Score entries will be added here -->
+                <div class="score-entry">
+                    <div class="score-rank">1</div>
+                    <div class="score-value">1500</div>
+                    <div class="score-date">Today</div>
+                </div>
+                <div class="score-entry">
+                    <div class="score-rank">2</div>
+                    <div class="score-value">1200</div>
+                    <div class="score-date">Yesterday</div>
+                </div>
+            </div>
+            
+            <button class="btn btn-secondary" id="clearHistory" style="width: 100%; margin-top: 20px;">
+                <i class="fas fa-trash"></i> CLEAR HISTORY
+            </button>
         </div>
     </div>
 
@@ -391,7 +1016,7 @@
         const pauseBtn = document.getElementById('pauseBtn');
         const resetBtn = document.getElementById('resetBtn');
         const soundToggle = document.getElementById('soundToggle');
-        const helpBtn = document.getElementById('helpBtn');
+        const musicToggle = document.getElementById('musicToggle');
         const scoreElement = document.getElementById('score');
         const highScoreElement = document.getElementById('high-score');
         const lengthElement = document.getElementById('length');
@@ -401,9 +1026,49 @@
         const difficultyButtons = document.querySelectorAll('.difficulty-btn');
         const particlesContainer = document.getElementById('particles');
         
+        // Menu elements
+        const menuBtn = document.getElementById('menuBtn');
+        const menuPanel = document.getElementById('menuPanel');
+        const menuOverlay = document.getElementById('menuOverlay');
+        const closeMenu = document.getElementById('closeMenu');
+        const fullscreenBtn = document.getElementById('fullscreenBtn');
+        const exitToMenuBtn = document.getElementById('exitToMenuBtn');
+        const quitGameBtn = document.getElementById('quitGameBtn');
+        const soundSettingsBtn = document.getElementById('soundSettingsBtn');
+        const musicSettingsBtn = document.getElementById('musicSettingsBtn');
+        const scoreHistoryBtn = document.getElementById('scoreHistoryBtn');
+        const howToPlayBtn = document.getElementById('howToPlayBtn');
+        const aboutGameBtn = document.getElementById('aboutGameBtn');
+        const pauseResumeBtn = document.getElementById('pauseResumeBtn');
+        const restartGameBtn = document.getElementById('restartGameBtn');
+        
+        // Modal elements
+        const settingsModal = document.getElementById('settingsModal');
+        const scoreModal = document.getElementById('scoreModal');
+        const closeSettings = document.getElementById('closeSettings');
+        const closeScoreModal = document.getElementById('closeScoreModal');
+        const soundSlider = document.getElementById('soundSlider');
+        const musicSlider = document.getElementById('musicSlider');
+        const speedSlider = document.getElementById('speedSlider');
+        const soundValue = document.getElementById('soundValue');
+        const musicValue = document.getElementById('musicValue');
+        const speedValue = document.getElementById('speedValue');
+        const saveSettings = document.getElementById('saveSettings');
+        const clearHistory = document.getElementById('clearHistory');
+        const scoreHistory = document.getElementById('scoreHistory');
+        
         // Set canvas dimensions
-        canvas.width = canvas.parentElement.clientWidth;
-        canvas.height = canvas.parentElement.clientHeight;
+        function resizeCanvas() {
+            const gameWrapper = canvas.parentElement;
+            canvas.width = gameWrapper.clientWidth;
+            canvas.height = gameWrapper.clientHeight;
+            
+            if (gameRunning && !gamePaused) {
+                draw();
+            }
+        }
+        
+        resizeCanvas();
         
         // Game variables
         let gameSpeed = 90; // milliseconds per frame (lower is faster)
@@ -418,8 +1083,32 @@
         let gamePaused = false;
         let gameRunning = false;
         let soundEnabled = true;
+        let musicEnabled = true;
         let lastRenderTime = 0;
         let particles = [];
+        let scoreHistoryData = JSON.parse(localStorage.getItem('snakeScoreHistory')) || [];
+        
+        // Audio elements
+        const eatSound = new Audio();
+        const gameOverSound = new Audio();
+        const backgroundMusic = new Audio();
+        
+        // Initialize audio
+        function initAudio() {
+            // Create simple sounds using Web Audio API
+            try {
+                // Background music (placeholder - you can replace with actual music)
+                backgroundMusic.loop = true;
+                backgroundMusic.volume = musicSlider.value / 100 * 0.5;
+                
+                // Check if music is enabled
+                if (!musicEnabled) {
+                    backgroundMusic.volume = 0;
+                }
+            } catch (e) {
+                console.log("Audio not supported");
+            }
+        }
         
         // Initialize game
         function initGame() {
@@ -438,7 +1127,7 @@
             scoreElement.textContent = score;
             highScoreElement.textContent = highScore;
             lengthElement.textContent = snake.length;
-            speedElement.textContent = Math.floor(120/gameSpeed);
+            speedElement.textContent = Math.floor(150/gameSpeed);
             
             // Generate first food
             generateFood();
@@ -448,6 +1137,18 @@
                 cancelAnimationFrame(gameLoop);
             }
             gameRunning = true;
+            gamePaused = false;
+            pauseBtn.innerHTML = '<i class="fas fa-pause"></i> PAUSE GAME';
+            pauseResumeBtn.innerHTML = '<i class="fas fa-pause"></i> Pause/Resume';
+            
+            // Start background music if enabled
+            if (musicEnabled) {
+                backgroundMusic.volume = musicSlider.value / 100 * 0.5;
+                // In a real game, you would play actual music here
+                // backgroundMusic.play().catch(e => console.log("Audio play failed:", e));
+            }
+            
+            lastRenderTime = performance.now();
             gameLoop = requestAnimationFrame(update);
         }
         
@@ -472,12 +1173,12 @@
             } while (foodOnSnake);
             
             // Create particle effect at food position
-            createParticles(food.x * gridSize + gridSize/2, food.y * gridSize + gridSize/2, 10, '#4cc9f0');
+            createParticles(food.x * gridSize + gridSize/2, food.y * gridSize + gridSize/2, 10, 'var(--primary)');
         }
         
         // Main game update function
         function update(currentTime) {
-            if (!gameRunning) return;
+            if (!gameRunning || gamePaused) return;
             
             // Calculate time since last update
             const secondsSinceLastRender = (currentTime - lastRenderTime) / 1000;
@@ -537,14 +1238,14 @@
                 // Increase game speed slightly
                 if (gameSpeed > 40) {
                     gameSpeed -= 1;
-                    speedElement.textContent = Math.floor(120/gameSpeed);
+                    speedElement.textContent = Math.floor(150/gameSpeed);
                 }
                 
                 // Generate new food
                 generateFood();
                 
                 // Create eating effect
-                createParticles(head.x * gridSize + gridSize/2, head.y * gridSize + gridSize/2, 15, '#f0ff00');
+                createParticles(head.x * gridSize + gridSize/2, head.y * gridSize + gridSize/2, 15, 'var(--warning)');
                 
                 // Play sound if enabled
                 if (soundEnabled) {
@@ -569,8 +1270,8 @@
         function draw() {
             // Clear canvas with gradient background
             const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-            gradient.addColorStop(0, '#0a192f');
-            gradient.addColorStop(1, '#1a3a5f');
+            gradient.addColorStop(0, 'var(--darker)');
+            gradient.addColorStop(1, 'var(--dark)');
             ctx.fillStyle = gradient;
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             
@@ -587,14 +1288,14 @@
             drawParticles();
             
             // Draw border
-            ctx.strokeStyle = '#2a5c9a';
+            ctx.strokeStyle = 'var(--primary)';
             ctx.lineWidth = 3;
             ctx.strokeRect(0, 0, canvas.width, canvas.height);
         }
         
         // Draw grid lines
         function drawGrid() {
-            ctx.strokeStyle = 'rgba(42, 92, 154, 0.2)';
+            ctx.strokeStyle = 'rgba(0, 217, 255, 0.1)';
             ctx.lineWidth = 0.5;
             
             // Vertical lines
@@ -633,8 +1334,8 @@
                 
                 if (isHead) {
                     // Head gradient
-                    segmentGradient.addColorStop(0, '#4cc9f0');
-                    segmentGradient.addColorStop(1, '#2a8bb3');
+                    segmentGradient.addColorStop(0, 'var(--primary)');
+                    segmentGradient.addColorStop(1, 'var(--primary-dark)');
                 } else {
                     // Body gradient - color changes based on position
                     const colorValue = Math.floor(200 - (i / snake.length) * 100);
@@ -643,7 +1344,7 @@
                 }
                 
                 // Draw segment with shadow
-                ctx.shadowColor = isHead ? '#4cc9f0' : '#00ff88';
+                ctx.shadowColor = isHead ? 'var(--primary)' : 'var(--success)';
                 ctx.shadowBlur = 15;
                 ctx.shadowOffsetX = 0;
                 ctx.shadowOffsetY = 0;
@@ -660,7 +1361,7 @@
                     ctx.fill();
                     
                     // Draw eyes
-                    ctx.fillStyle = '#0a192f';
+                    ctx.fillStyle = 'var(--darker)';
                     const eyeOffset = gridSize/3;
                     if (direction === 'right') {
                         ctx.fillRect(x + gridSize - 5, y + eyeOffset, 3, 3);
@@ -688,7 +1389,7 @@
             const y = food.y * gridSize;
             
             // Create glowing effect
-            ctx.shadowColor = '#4cc9f0';
+            ctx.shadowColor = 'var(--primary)';
             ctx.shadowBlur = 20;
             ctx.shadowOffsetX = 0;
             ctx.shadowOffsetY = 0;
@@ -700,8 +1401,8 @@
                 x + gridSize/2, y + gridSize/2, 0,
                 x + gridSize/2, y + gridSize/2, gridSize/2
             );
-            foodGradient.addColorStop(0, '#4cc9f0');
-            foodGradient.addColorStop(1, '#2a5c9a');
+            foodGradient.addColorStop(0, 'var(--primary)');
+            foodGradient.addColorStop(1, 'var(--primary-dark)');
             ctx.fillStyle = foodGradient;
             ctx.fill();
             
@@ -739,17 +1440,63 @@
             finalScoreElement.textContent = score;
             finalHighScoreElement.textContent = highScore;
             
+            // Save score to history
+            saveScoreToHistory(score);
+            
             // Show game over screen
             gameOverScreen.style.display = 'flex';
             
             // Create explosion effect
             const head = snake[0];
-            createParticles(head.x * gridSize + gridSize/2, head.y * gridSize + gridSize/2, 30, '#ff4c6a');
+            createParticles(head.x * gridSize + gridSize/2, head.y * gridSize + gridSize/2, 30, 'var(--secondary)');
             
             // Play game over sound if enabled
             if (soundEnabled) {
                 playGameOverSound();
             }
+            
+            // Stop background music
+            backgroundMusic.pause();
+        }
+        
+        // Save score to history
+        function saveScoreToHistory(score) {
+            const scoreEntry = {
+                score: score,
+                date: new Date().toLocaleDateString(),
+                time: new Date().toLocaleTimeString()
+            };
+            
+            scoreHistoryData.unshift(scoreEntry);
+            
+            // Keep only top 10 scores
+            if (scoreHistoryData.length > 10) {
+                scoreHistoryData = scoreHistoryData.slice(0, 10);
+            }
+            
+            localStorage.setItem('snakeScoreHistory', JSON.stringify(scoreHistoryData));
+            updateScoreHistoryDisplay();
+        }
+        
+        // Update score history display
+        function updateScoreHistoryDisplay() {
+            scoreHistory.innerHTML = '';
+            
+            if (scoreHistoryData.length === 0) {
+                scoreHistory.innerHTML = '<div style="text-align: center; padding: 20px; color: var(--light)">No scores yet</div>';
+                return;
+            }
+            
+            scoreHistoryData.forEach((entry, index) => {
+                const scoreEntry = document.createElement('div');
+                scoreEntry.className = 'score-entry';
+                scoreEntry.innerHTML = `
+                    <div class="score-rank">${index + 1}</div>
+                    <div class="score-value">${entry.score}</div>
+                    <div class="score-date">${entry.date} ${entry.time}</div>
+                `;
+                scoreHistory.appendChild(scoreEntry);
+            });
         }
         
         // Particle system for visual effects
@@ -813,7 +1560,7 @@
                 oscillator.frequency.setValueAtTime(523.25, audioContext.currentTime); // C5
                 oscillator.frequency.exponentialRampToValueAtTime(659.25, audioContext.currentTime + 0.1); // E5
                 
-                gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                gainNode.gain.setValueAtTime(0.3 * (soundSlider.value / 100), audioContext.currentTime);
                 gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
                 
                 oscillator.start(audioContext.currentTime);
@@ -835,7 +1582,7 @@
                 oscillator.frequency.setValueAtTime(349.23, audioContext.currentTime); // F4
                 oscillator.frequency.exponentialRampToValueAtTime(174.61, audioContext.currentTime + 0.5); // F3
                 
-                gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                gainNode.gain.setValueAtTime(0.3 * (soundSlider.value / 100), audioContext.currentTime);
                 gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
                 
                 oscillator.start(audioContext.currentTime);
@@ -858,10 +1605,53 @@
             }
         }
         
+        // Fullscreen functionality
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(err => {
+                    console.log(`Error attempting to enable fullscreen: ${err.message}`);
+                });
+                document.body.classList.add('fullscreen');
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                    document.body.classList.remove('fullscreen');
+                }
+            }
+        }
+        
+        // Menu functionality
+        function toggleMenu() {
+            menuPanel.classList.toggle('active');
+            menuOverlay.style.display = menuPanel.classList.contains('active') ? 'block' : 'none';
+        }
+        
+        // Initialize settings display
+        function updateSettingsDisplay() {
+            soundValue.textContent = `${soundSlider.value}%`;
+            musicValue.textContent = `${musicSlider.value}%`;
+            
+            const speedVal = parseInt(speedSlider.value);
+            let speedText = 'Custom';
+            if (speedVal >= 120) speedText = 'Very Easy';
+            else if (speedVal >= 100) speedText = 'Easy';
+            else if (speedVal >= 80) speedText = 'Normal';
+            else if (speedVal >= 60) speedText = 'Hard';
+            else speedText = 'Expert';
+            
+            speedValue.textContent = speedText;
+        }
+        
         // Event Listeners
         startBtn.addEventListener('click', () => {
             startScreen.style.display = 'none';
             initGame();
+            // Enter fullscreen on game start
+            setTimeout(() => {
+                if (window.innerWidth > 768) {
+                    toggleFullscreen();
+                }
+            }, 100);
         });
         
         restartBtn.addEventListener('click', () => {
@@ -869,7 +1659,9 @@
             initGame();
         });
         
-        pauseBtn.addEventListener('click', () => {
+        pauseBtn.addEventListener('click', togglePause);
+        
+        function togglePause() {
             if (!gameRunning && !gamePaused) return;
             
             gamePaused = !gamePaused;
@@ -877,12 +1669,14 @@
             if (gamePaused) {
                 cancelAnimationFrame(gameLoop);
                 pauseBtn.innerHTML = '<i class="fas fa-play"></i> RESUME GAME';
+                pauseResumeBtn.innerHTML = '<i class="fas fa-play"></i> Pause/Resume';
             } else {
                 lastRenderTime = performance.now();
                 gameLoop = requestAnimationFrame(update);
                 pauseBtn.innerHTML = '<i class="fas fa-pause"></i> PAUSE GAME';
+                pauseResumeBtn.innerHTML = '<i class="fas fa-pause"></i> Pause/Resume';
             }
-        });
+        }
         
         resetBtn.addEventListener('click', () => {
             if (gameRunning) {
@@ -894,6 +1688,7 @@
             if (gamePaused) {
                 gamePaused = false;
                 pauseBtn.innerHTML = '<i class="fas fa-pause"></i> PAUSE GAME';
+                pauseResumeBtn.innerHTML = '<i class="fas fa-pause"></i> Pause/Resume';
             }
             
             gameOverScreen.style.display = 'none';
@@ -903,12 +1698,134 @@
         soundToggle.addEventListener('click', () => {
             soundEnabled = !soundEnabled;
             soundToggle.innerHTML = soundEnabled ? 
-                '<i class="fas fa-volume-up"></i> SOUND ON' : 
-                '<i class="fas fa-volume-mute"></i> SOUND OFF';
+                '<i class="fas fa-volume-up"></i> SOUND: ON' : 
+                '<i class="fas fa-volume-mute"></i> SOUND: OFF';
         });
         
-        helpBtn.addEventListener('click', () => {
-            alert("HOW TO PLAY:\n\n• Use Arrow Keys or WASD to control the snake\n• Eat the blue food to grow longer and increase your score\n• Avoid hitting the walls or the snake's own body\n• The game speeds up as your score increases\n• Press P to pause/resume the game\n\nTry to beat your high score!");
+        musicToggle.addEventListener('click', () => {
+            musicEnabled = !musicEnabled;
+            musicToggle.innerHTML = musicEnabled ? 
+                '<i class="fas fa-music"></i> MUSIC: ON' : 
+                '<i class="fas fa-music"></i> MUSIC: OFF';
+            
+            if (musicEnabled && gameRunning && !gamePaused) {
+                backgroundMusic.volume = musicSlider.value / 100 * 0.5;
+                // backgroundMusic.play().catch(e => console.log("Audio play failed:", e));
+            } else {
+                backgroundMusic.pause();
+            }
+        });
+        
+        // Menu event listeners
+        menuBtn.addEventListener('click', toggleMenu);
+        closeMenu.addEventListener('click', toggleMenu);
+        menuOverlay.addEventListener('click', toggleMenu);
+        
+        pauseResumeBtn.addEventListener('click', () => {
+            togglePause();
+            toggleMenu();
+        });
+        
+        restartGameBtn.addEventListener('click', () => {
+            resetBtn.click();
+            toggleMenu();
+        });
+        
+        fullscreenBtn.addEventListener('click', () => {
+            toggleFullscreen();
+            toggleMenu();
+        });
+        
+        exitToMenuBtn.addEventListener('click', () => {
+            if (gameRunning) {
+                cancelAnimationFrame(gameLoop);
+                gameRunning = false;
+            }
+            gameOverScreen.style.display = 'none';
+            startScreen.style.display = 'flex';
+            toggleMenu();
+        });
+        
+        quitGameBtn.addEventListener('click', () => {
+            if (confirm('Are you sure you want to quit the game?')) {
+                if (gameRunning) {
+                    cancelAnimationFrame(gameLoop);
+                }
+                // In a real game, you might want to do more cleanup
+                alert('Thanks for playing!');
+                toggleMenu();
+            }
+        });
+        
+        soundSettingsBtn.addEventListener('click', () => {
+            settingsModal.style.display = 'flex';
+            toggleMenu();
+        });
+        
+        musicSettingsBtn.addEventListener('click', () => {
+            settingsModal.style.display = 'flex';
+            toggleMenu();
+        });
+        
+        scoreHistoryBtn.addEventListener('click', () => {
+            scoreModal.style.display = 'flex';
+            toggleMenu();
+        });
+        
+        howToPlayBtn.addEventListener('click', () => {
+            alert("HOW TO PLAY:\n\n• Use Arrow Keys or WASD to control the snake\n• Eat the blue food to grow longer and increase your score\n• Avoid hitting the walls or the snake's own body\n• The game speeds up as your score increases\n• Press P to pause/resume the game\n• Press F to toggle fullscreen\n\nTry to beat your high score!");
+            toggleMenu();
+        });
+        
+        aboutGameBtn.addEventListener('click', () => {
+            alert("3D SNAKE GAME - PREMIUM EDITION\n\nA modern take on the classic snake game with 3D effects, particles, and smooth animations.\n\nFeatures:\n• Fullscreen mode\n• Sound and music settings\n• Score history\n• Multiple difficulty levels\n• Responsive design\n\nCreated with HTML5 Canvas and JavaScript");
+            toggleMenu();
+        });
+        
+        // Modal event listeners
+        closeSettings.addEventListener('click', () => {
+            settingsModal.style.display = 'none';
+        });
+        
+        closeScoreModal.addEventListener('click', () => {
+            scoreModal.style.display = 'none';
+        });
+        
+        soundSlider.addEventListener('input', () => {
+            updateSettingsDisplay();
+        });
+        
+        musicSlider.addEventListener('input', () => {
+            updateSettingsDisplay();
+            if (musicEnabled && gameRunning && !gamePaused) {
+                backgroundMusic.volume = musicSlider.value / 100 * 0.5;
+            }
+        });
+        
+        speedSlider.addEventListener('input', () => {
+            updateSettingsDisplay();
+            gameSpeed = parseInt(speedSlider.value);
+            speedElement.textContent = Math.floor(150/gameSpeed);
+        });
+        
+        saveSettings.addEventListener('click', () => {
+            // Save settings to localStorage
+            localStorage.setItem('snakeSettings', JSON.stringify({
+                soundVolume: soundSlider.value,
+                musicVolume: musicSlider.value,
+                gameSpeed: speedSlider.value
+            }));
+            alert('Settings saved successfully!');
+            settingsModal.style.display = 'none';
+        });
+        
+        clearHistory.addEventListener('click', () => {
+            if (confirm('Are you sure you want to clear all score history?')) {
+                scoreHistoryData = [];
+                localStorage.removeItem('snakeScoreHistory');
+                updateScoreHistoryDisplay();
+                scoreModal.style.display = 'none';
+            }
         });
         
         // Difficulty selection
@@ -917,15 +1834,33 @@
                 difficultyButtons.forEach(btn => btn.classList.remove('active'));
                 button.classList.add('active');
                 gameSpeed = parseInt(button.getAttribute('data-speed'));
-                speedElement.textContent = Math.floor(120/gameSpeed);
+                speedSlider.value = gameSpeed;
+                speedElement.textContent = Math.floor(150/gameSpeed);
+                updateSettingsDisplay();
             });
         });
         
         // Keyboard controls
         document.addEventListener('keydown', (e) => {
+            // Close modals with ESC
+            if (e.key === 'Escape') {
+                if (settingsModal.style.display === 'flex') {
+                    settingsModal.style.display = 'none';
+                } else if (scoreModal.style.display === 'flex') {
+                    scoreModal.style.display = 'none';
+                } else if (menuPanel.classList.contains('active')) {
+                    toggleMenu();
+                }
+            }
+            
+            // Fullscreen toggle
+            if (e.key === 'f' || e.key === 'F') {
+                toggleFullscreen();
+            }
+            
             if (!gameRunning || gamePaused) {
                 if (e.key === 'p' || e.key === 'P') {
-                    pauseBtn.click();
+                    togglePause();
                 }
                 return;
             }
@@ -959,29 +1894,49 @@
                     break;
                 case 'p':
                 case 'P':
-                    pauseBtn.click();
+                    togglePause();
                     break;
                 case ' ':
                     // Spacebar to pause
-                    pauseBtn.click();
+                    togglePause();
                     break;
             }
         });
         
         // Window resize handler
-        window.addEventListener('resize', () => {
-            canvas.width = canvas.parentElement.clientWidth;
-            canvas.height = canvas.parentElement.clientHeight;
-            if (gameRunning) {
-                draw();
+        window.addEventListener('resize', resizeCanvas);
+        
+        // Fullscreen change handler
+        document.addEventListener('fullscreenchange', () => {
+            if (!document.fullscreenElement) {
+                document.body.classList.remove('fullscreen');
             }
         });
         
-        // Initialize background particles
-        createBackgroundParticles();
+        // Initialize
+        function init() {
+            // Load saved settings
+            const savedSettings = localStorage.getItem('snakeSettings');
+            if (savedSettings) {
+                const settings = JSON.parse(savedSettings);
+                soundSlider.value = settings.soundVolume || 70;
+                musicSlider.value = settings.musicVolume || 50;
+                speedSlider.value = settings.gameSpeed || 90;
+                gameSpeed = parseInt(speedSlider.value);
+            }
+            
+            updateSettingsDisplay();
+            initAudio();
+            updateScoreHistoryDisplay();
+            createBackgroundParticles();
+            draw();
+            
+            // Set high score
+            highScoreElement.textContent = highScore;
+        }
         
-        // Draw initial game screen
-        draw();
+        // Start initialization
+        init();
     </script>
 </body>
 </html>
